@@ -2,6 +2,8 @@ import React from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import EditableField from "../EditableField/EditableField";
+import DoneButton from "../Button/DoneButton";
+import DeleteButton from "../Button/DeleteButton";
 dayjs.extend(relativeTime);
 
 interface Category {
@@ -45,29 +47,33 @@ const TodoCard: React.FC<TodoCardProps> = ({ todo, onDelete, onUpdate }) => {
   };
 
   return (
-    <div className="p-4 bg-beige shadow-md rounded-lg mb-4">
-      <EditableField value={todo.title} onSubmit={handleUpdateTitle} />
-      <EditableField
-        value={todo.description}
-        onSubmit={handleUpdateDescription}
-      />
-      <h4 className="text-sm text-gray-600">Category: {todo.category.name}</h4>
-      <h4 className="text-sm text-gray-600">
-        Posted {dayjs(todo.createdAt).fromNow()}
+    <div className="p-4 bg-white bg-opacity-80  shadow-md rounded-lg mb-4">
+      <div className="text-md font-semibold">
+        <EditableField value={todo.title} onSubmit={handleUpdateTitle} />
+        </div>
+        <div className="text-lg">
+        <EditableField
+          value={todo.description}
+          onSubmit={handleUpdateDescription}
+        />
+      </div>
+      <h4 className="text-md text-gray-800">Category: {todo.category.name}</h4>
+      <h4 className="text-sm text-gray-500">
+        Created {dayjs(todo.createdAt).fromNow()}
       </h4>
       <div className="flex justify-between mt-4">
-        <button
+        <DoneButton
           className={`px-4 py-2 rounded ${
-            todo.completed ? "bg-green-500" : "bg-gray-500"
+            todo.completed ? "bg-green-500" : "bg-gray-500 opacity-60"
           } text-white`}
           onClick={handleToggleComplete}>
-          {todo.completed ? "Mark as Incomplete" : "Mark as Complete"}
-        </button>
-        <button
+          {todo.completed ? "✓ Done" : "Done"}
+        </DoneButton>
+        <DeleteButton
           className="px-4 py-2 bg-red-500 text-white rounded"
           onClick={handleDelete}>
           Delete
-        </button>
+        </DeleteButton>
       </div>
     </div>
   );

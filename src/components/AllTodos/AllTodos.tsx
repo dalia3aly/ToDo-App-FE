@@ -12,29 +12,33 @@ const AllTodos: React.FC<AllTodosProps> = ({ todos, setTodos, filter }) => {
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
+    let sortedTodos = [...todos].sort(
+      (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
     let filtered: Todo[] = [];
     if (filter === "completed") {
-      filtered = todos.filter((todo) => todo.completed);
+      filtered = sortedTodos.filter((todo) => todo.completed);
     } else if (filter === "incomplete") {
-      filtered = todos.filter((todo) => !todo.completed);
+      filtered = sortedTodos.filter((todo) => !todo.completed);
     } else {
-      filtered = todos;
+      filtered = sortedTodos;
     }
-    setFilteredTodos(filtered.reverse());
+    setFilteredTodos(filtered);
   }, [todos, filter]);
 
-const handleDelete = async (id: number) => {
-  try {
-    const response = await todoService.deleteTodoById(id);
-    if (response.ok) {
-      setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
-    } else {
-      console.error("Failed to delete todo:", response.statusText);
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await todoService.deleteTodoById(id);
+      if (response.ok) {
+        setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+      } else {
+        console.error("Failed to delete todo:", response.statusText);
+      }
+    } catch (e) {
+      console.error("Error deleting todo:", e);
     }
-  } catch (e) {
-    console.error("Error deleting todo:", e);
-  }
-};
+  };
 
   const handleUpdate = async (id: number, data: Partial<Todo>) => {
     try {
@@ -44,7 +48,6 @@ const handleDelete = async (id: number) => {
       console.error(e);
     }
   };
-  
 
   return (
     <div className="todo-list">

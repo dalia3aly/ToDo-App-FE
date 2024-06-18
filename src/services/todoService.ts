@@ -15,7 +15,6 @@ const handleResponse = async (response: Response) => {
 };
 
 const todoService = {
-
   findAllTodos: async () => {
     const response = await fetch(baseURL);
     return handleResponse(response);
@@ -81,6 +80,7 @@ export interface CreateTodoDTO {
   title: string;
   description: string;
   completed: boolean;
+  categoryId: number;
 }
 
 export interface UpdateTodoDTO {
