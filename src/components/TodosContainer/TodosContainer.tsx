@@ -44,20 +44,20 @@ const TodosContainer: React.FC<TodosContainerProps> = ({
   });
 
   return (
-    <div className="todo-container">
-      <AddButton className="mb-4" onClick={() => setIsModalOpen(true)}>
-        Add Task
-      </AddButton>
-      <div className="header">
-        <div className="filters flex justify-between items-center mb-4">
-          <select className="mr-2" onChange={(e) => setFilter(e.target.value)}>
-            <option value="all">All</option>
-            <option value="completed">Completed</option>
-            <option value="incomplete">Incomplete</option>
-          </select>
-        </div>
+    <div className="todo-container flex flex-col min-h-screen">
+      <div className="flex justify-between items-center p-4">
+        <AddButton onClick={() => setIsModalOpen(true)}>+ Add Task</AddButton>
+        <select
+          className="p-2 border rounded"
+          onChange={(e) => setFilter(e.target.value)}>
+          <option value="all">All</option>
+          <option value="completed">Completed</option>
+          <option value="incomplete">Incomplete</option>
+        </select>
       </div>
-      <AllTodos todos={filteredTodos} setTodos={setTodos} filter={filter} />
+      <div className="flex-1 p-4">
+        <AllTodos todos={filteredTodos} setTodos={setTodos} filter={filter} />
+      </div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <TaskForm
           onSave={(title, description, categoryId) => {
