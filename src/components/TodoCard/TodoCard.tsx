@@ -47,17 +47,19 @@ const TodoCard: React.FC<TodoCardProps> = ({ todo, onDelete, onUpdate }) => {
   };
 
   return (
-    <div className="p-4 bg-white bg-opacity-80  shadow-md rounded-lg mb-4">
-      <div className="text-md font-semibold">
+    <div className="w-full max-w-xl p-4 bg-white bg-opacity-80 shadow-md rounded-lg mb-4">
+      <div className="text-md font-semibold break-words">
         <EditableField value={todo.title} onSubmit={handleUpdateTitle} />
-        </div>
-        <div className="text-lg">
+      </div>
+      <div className="text-lg break-words">
         <EditableField
           value={todo.description}
           onSubmit={handleUpdateDescription}
         />
       </div>
-      <h4 className="text-md text-gray-800">Category: {todo.category.name}</h4>
+      <h4 className="text-md text-gray-800 break-words">
+        Category: {todo.category.name}
+      </h4>
       <h4 className="text-sm text-gray-500">
         Created {dayjs(todo.createdAt).fromNow()}
       </h4>
