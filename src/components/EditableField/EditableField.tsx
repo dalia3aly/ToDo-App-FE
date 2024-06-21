@@ -38,7 +38,7 @@ const EditableField: React.FC<EditableFieldProps> = ({ onSubmit, value }) => {
       return (
         <button type="button" onClick={handleFormSubmit}>
           <FontAwesomeIcon
-            className="w-5 cursor-pointer"
+            className="w-3 cursor-pointer"
             icon={faCheck}
             data-testid="check-icon"
           />
@@ -47,13 +47,13 @@ const EditableField: React.FC<EditableFieldProps> = ({ onSubmit, value }) => {
     }
     return displayText === "" ? (
       <FontAwesomeIcon
-        className="w-5 cursor-pointer"
+        className="w-3 cursor-pointer"
         icon={faPlus}
         data-testid="plus-icon"
       />
     ) : (
       <FontAwesomeIcon
-        className="w-5 cursor-pointer"
+        className="w-3 cursor-pointer"
         icon={faPencil}
         data-testid="pencil-icon"
       />
@@ -63,7 +63,7 @@ const EditableField: React.FC<EditableFieldProps> = ({ onSubmit, value }) => {
   return (
     <div className="flex items-center space-x-2">
       {isEditable ? (
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center  space-x-2">
           <input
             value={displayText}
             onChange={(e) => setDisplayText(e.target.value)}

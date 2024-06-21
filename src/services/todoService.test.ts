@@ -31,6 +31,7 @@ describe("todoService", () => {
       title: "New Todo",
       description: "Test",
       completed: false,
+      categoryId: 0
     };
     const createdTodo = { id: 1, ...newTodo };
     mockFetch.mockResolvedValueOnce({

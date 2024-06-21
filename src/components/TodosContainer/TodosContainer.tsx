@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import AllTodos from "../AllTodos/AllTodos";
-import todoService, { Todo, Category } from "../../services/todoService";
+import todoService, { Todo } from "../../services/todoService";
 import Modal from "../../components/Modal/Modal";
-import Button from "../../components/Button/Button";
+import AddButton from "../../components/Button/AddButton";
 import TaskForm from "../../components/TaskForm/TaskForm";
+import categoryService, { Category } from "../../services/categoryService";
 
-const TodosContainer: React.FC = () => {
+interface TodosContainerProps {
+  selectedCategory: number | null;
+}
+
+const TodosContainer: React.FC<TodosContainerProps> = ({
+  selectedCategory,
+}) => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [filter, setFilter] = useState<string>("all");
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
@@ -18,68 +24,48 @@ const TodosContainer: React.FC = () => {
       .then((data) => setTodos(data))
       .catch((e) => console.error(e));
 
-    todoService
+    categoryService
       .findAllCategories()
       .then((data) => setCategories(data))
       .catch((e) => console.error(e));
   }, []);
 
-  const handleCreate = (
-    title: string,
-    description: string,
-    categoryId: number
-  ) => {
-    const newTodo = { title, description, completed: false, categoryId };
-    todoService
-      .createTodo(newTodo)
-      .then((createdTodo) => {
-        setTodos([...todos, createdTodo]);
-      })
-      .catch((e) => console.error(e));
-  };
-
   const filteredTodos = todos.filter((todo) => {
-    if (filter === "completed") return todo.completed;
-    if (filter === "incomplete") return !todo.completed;
-    if (selectedCategory) return todo.category.id === selectedCategory;
-    return true;
+    const matchesCategory = selectedCategory
+      ? todo.category.id === selectedCategory
+      : true;
+    const matchesFilter =
+      filter === "all"
+        ? true
+        : filter === "completed"
+        ? todo.completed
+        : !todo.completed;
+    return matchesCategory && matchesFilter;
   });
 
   return (
-    <div className="todo-container">
-      <div className="header">
-        <div className="filters flex justify-between items-center mb-4">
-          <select
-            className="mr-2"
-            onChange={(e) => setFilter(e.target.value)}
-          >
-            <option value="all">All</option>
-            <option value="completed">Completed</option>
-            <option value="incomplete">Incomplete</option>
-          </select>
-          <select
-            className="mr-2"
-            onChange={(e) => setSelectedCategory(Number(e.target.value))}
-          >
-            <option value="">All Categories</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-        </div>
+    <div className="todo-container flex flex-col min-h-screen">
+      <div className="flex justify-between items-center p-4">
+        <AddButton onClick={() => setIsModalOpen(true)}>+ Add Task</AddButton>
+        <select
+          className="p-2 border rounded"
+          onChange={(e) => setFilter(e.target.value)}>
+          <option value="all">All</option>
+          <option value="completed">Completed</option>
+          <option value="incomplete">Incomplete</option>
+        </select>
       </div>
-      <AllTodos todos={filteredTodos} setTodos={setTodos} filter={filter} />
-      <Button
-        className="mb-4"
-        onClick={() => setIsModalOpen(true)}
-      >
-        Add Task
-      </Button>
+      <div className="flex-1 p-4">
+        <AllTodos todos={filteredTodos} setTodos={setTodos} filter={filter} />
+      </div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <TaskForm
-          onSave={handleCreate}
+          onSave={(title, description, categoryId) => {
+            todoService
+              .createTodo({ title, description, completed: false, categoryId })
+              .then((newTodo) => setTodos([...todos, newTodo]))
+              .catch((e) => console.error(e));
+          }}
           onClose={() => setIsModalOpen(false)}
           categories={categories}
         />
