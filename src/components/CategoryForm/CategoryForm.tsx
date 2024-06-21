@@ -19,9 +19,6 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ onSave, onClose }) => {
 
   return (
     <div>
-        {/* <h2 className="text-2xl font-semibold m-2 flex items-center justify-center text-gray-800">
-            Add a Category
-        </h2> */}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-gray-700">Category Name:</label>
@@ -51,3 +48,5 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ onSave, onClose }) => {
 };
 
 export default CategoryForm;
+
+

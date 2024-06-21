@@ -70,7 +70,7 @@ const MainPage: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen flex flex-col lg:flex-row bg-cover bg-center"
+      className="min-h-screen flex flex-col lg:flex-row bg-cover bg-center bg-no-repeat bg-fixed"
       style={{ backgroundImage: 'url("/todo_bg.png")' }}>
       <Navbar onToggleSidebar={toggleSidebar} />
       <div ref={sidebarRef} className="relative">

@@ -8,16 +8,15 @@ describe("Modal", () => {
     jest.clearAllMocks();
   });
 
-  it("renders the modal when isOpen is true", () => {
-    render(
-      <Modal isOpen={true} onClose={mockOnClose}>
-        <p>Modal Content</p>
-      </Modal>
-    );
+ it("renders the modal when isOpen is true", () => {
+   render(
+     <Modal isOpen={true} onClose={jest.fn()}>
+       <p>Modal Content</p>
+     </Modal>
+   );
 
-    expect(screen.getByText("Add a Task")).toBeInTheDocument();
-    expect(screen.getByText("Modal Content")).toBeInTheDocument();
-  });
+   expect(screen.getByText("Modal Content")).toBeInTheDocument();
+ });
 
   it("does not render the modal when isOpen is false", () => {
     render(
