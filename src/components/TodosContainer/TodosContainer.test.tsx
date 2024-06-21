@@ -44,7 +44,7 @@ describe("TodosContainer", () => {
   });
 
   it("renders the TodosContainer and its components", async () => {
-    render(<TodosContainer />);
+    render(<TodosContainer selectedCategory={null} />);
 
     await waitFor(() => {
       expect(screen.getByText("Test Todo 1")).toBeInTheDocument();
@@ -55,7 +55,7 @@ describe("TodosContainer", () => {
   });
 
   it("loads todos and categories on mount", async () => {
-    render(<TodosContainer />);
+    render(<TodosContainer selectedCategory={null} />);
 
     await waitFor(() => {
       expect(todoService.findAllTodos).toHaveBeenCalled();
@@ -67,7 +67,7 @@ describe("TodosContainer", () => {
   });
 
   it("opens and closes the modal for adding a new task", async () => {
-    render(<TodosContainer />);
+    render(<TodosContainer selectedCategory={null} />);
 
     fireEvent.click(screen.getByText("Add Task"));
     expect(screen.getByText("Add a Task")).toBeInTheDocument();
